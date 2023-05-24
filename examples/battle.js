@@ -1,7 +1,7 @@
 import Web3 from 'web3'
 import OpenSea from 'opensea-js'
 import dotenv from 'dotenv'
-import configContract from "./configContract.json" assert {type: "json"};
+import configContract from "../configContract.json" assert {type: "json"};
 
 dotenv.config()
 
