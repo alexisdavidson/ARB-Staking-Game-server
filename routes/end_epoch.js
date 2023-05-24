@@ -38,6 +38,11 @@ router.post('/', async (req, res) => {
 
     console.log("Finding out winner...")
     let winnerId = 0
+    // todo:
+    // Get the 2 token addresses
+    // api call for the 2 token addresses
+    // compare price and set winner
+
     console.log("winnerId", winnerId)
 
 
@@ -53,8 +58,24 @@ router.post('/', async (req, res) => {
 
     console.log("Starting new epoch...")
     const nextRandomNumber = getRandom32Int()
+    let token1Address = ""
+    let token2Address = ""
+    let token1Symbol = ""
+    let token2Symbol = ""
+    // todo:
+    // iq where list comes from
+    // list from api? or hardcoded list?
+    // get 2 random tokens addresses and symbol from list
 
-    res.status(200).json({msg: "success " + poolMaster.address});
+    try {
+      await poolMaster.startEpoch(token1Address, token2Address, token1Symbol, token2Symbol)
+    } catch (error) {
+      console.log(error)
+      res.status(500).json(error);
+      return
+    }
+
+    res.status(200).json({msg: "success"});
 });
 
 const getRandom32Int = () => {
