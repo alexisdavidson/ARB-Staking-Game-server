@@ -1,18 +1,21 @@
 // Import required modules
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv'
 
 // Create an instance of the Express application
 const app = express();
 app.use(cors());
 
-// Define a route for the root endpoint
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+dotenv.config()
+
+import homeRoutes from './routes/home.js';
+import endEpochRoutes from './routes/end_epoch.js';
+
+app.use('/api/', homeRoutes);
+app.use('/api/end_epoch', endEpochRoutes);
 
 // Start the server
-const port = 3000; // Specify the port number
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+app.listen(process.env.PORT, () => {
+  console.log('Running on port ' + process.env.PORT)
+})
