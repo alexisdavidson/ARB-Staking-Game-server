@@ -1,8 +1,7 @@
-import { ethers } from "ethers"
-import express from 'express';
-import dotenv from 'dotenv'
-import * as fs from 'fs';
-import axios from 'axios'
+var { ethers } = require("ethers");
+var express = require("express");
+var dotenv = require("dotenv");
+var fs = require("fs");
 const router = express.Router();
 
 const PoolMasterAbi = JSON.parse(fs.readFileSync('./contractsData/PoolMaster.json'));
@@ -157,4 +156,4 @@ const getRandom32Int = () => {
     return randomNum.toString()
 }
 
-export default router;
+module.exports = router;
