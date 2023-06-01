@@ -1,11 +1,13 @@
 import { ethers } from "ethers"
-import PoolMasterAbi from '../contractsData/PoolMaster.json' assert { type: "json" };
-import PoolMasterAddress from '../contractsData/PoolMaster-address.json' assert { type: "json" };
-import tokenList from '../tokens.json' assert { type: "json" };
 import express from 'express';
 import dotenv from 'dotenv'
+import * as fs from 'fs';
 import axios from 'axios'
 const router = express.Router();
+
+const PoolMasterAbi = JSON.parse(fs.readFileSync('./contractsData/PoolMaster.json'));
+const PoolMasterAddress = JSON.parse(fs.readFileSync('./contractsData/PoolMaster-address.json'));
+const tokenList = JSON.parse(fs.readFileSync('./tokens.json'));
 
 dotenv.config()
 
