@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
 
       console.log("Ending epoch...")
       try {
-        await poolMaster.endEpoch(winnerId)
+        await(await poolMaster.endEpoch(winnerId)).wait()
       } catch (error) {
         console.log(error)
         res.status(500).json(error);
@@ -83,6 +83,7 @@ router.post('/', async (req, res) => {
 
     try {
       await poolMaster.startEpoch(nextToken1Symbol, nextToken2Symbol)
+      console.log("start epoch success")
     } catch (error) {
       console.log(error)
       res.status(500).json(error);
