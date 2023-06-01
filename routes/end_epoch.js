@@ -29,6 +29,7 @@ router.post('/', async (req, res) => {
       console.log("phase", phase)
     
       if (phase != 2) {
+        console.log("The epoch is not ended yet")
         res.status(500).json("The epoch is not ended yet");
         return
       }
