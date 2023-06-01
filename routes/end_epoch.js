@@ -1,5 +1,6 @@
 var { ethers } = require("ethers");
 var express = require("express");
+var axios = require("axios");
 var dotenv = require("dotenv");
 var fs = require("fs");
 const router = express.Router();
@@ -72,8 +73,8 @@ router.post('/', async (req, res) => {
     
 
     console.log("Starting new epoch...")
-    let randomIndex1 = getRandom32Int() & tokenList.length
-    let randomIndex2 = getRandom32Int() & tokenList.length
+    let randomIndex1 = getRandom32Int() % tokenList.length
+    let randomIndex2 = getRandom32Int() % tokenList.length
     let nextToken1Symbol = tokenList[randomIndex1].symbol
     let nextToken2Symbol = tokenList[randomIndex2].symbol
     console.log("nextToken1Symbol", nextToken1Symbol)
@@ -105,6 +106,9 @@ const getTokenBySymbol = async (symbol) => {
         'X-CMC_PRO_API_KEY': process.env.CMC_API_KEY
       }
     });
+
+    console.log("response")
+    console.log(response)
 
     const token = response.data.data[symbol];
     return {
