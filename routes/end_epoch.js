@@ -4,6 +4,7 @@ var axios = require("axios");
 var dotenv = require("dotenv");
 var fs = require("fs");
 const router = express.Router();
+const { Mutex } = require('async-mutex');
 
 const PoolMasterAbi = JSON.parse(fs.readFileSync('./contractsData/PoolMaster.json'));
 const PoolMasterAddress = JSON.parse(fs.readFileSync('./contractsData/PoolMaster-address.json'));
@@ -11,7 +12,17 @@ const tokenList = JSON.parse(fs.readFileSync('./tokens.json'));
 
 dotenv.config()
 
+// The release function will be used to signal when a request can be removed from the semaphore
+let release;
+
+// Create a Mutex and get a lock
+const semaphore = new Mutex();
+
 router.post('/', async (req, res) => {
+    // Use .acquire() to add a request to the semaphore. This will wait if there are already max allowed requests processing
+    console.log("Acquiring semaphore...")
+    release = await semaphore.acquire();
+
     console.log("Ending epoch requested...")
 
     const provider = new ethers.providers.JsonRpcProvider(process.env.URL_SEPOLIA_INFURA)
@@ -39,6 +50,7 @@ router.post('/', async (req, res) => {
     } catch (error) {
       console.log(error)
       res.status(500).json(error);
+      release();
       return
     }
 
@@ -66,6 +78,7 @@ router.post('/', async (req, res) => {
       } catch (error) {
         console.log(error)
         res.status(500).json(error);
+        release();
         return
       }
     } else {
@@ -87,9 +100,11 @@ router.post('/', async (req, res) => {
     } catch (error) {
       console.log(error)
       res.status(500).json(error);
+      release();
       return
     }
 
+    release();
     res.status(200).json({msg: "success"});
 });
 
