@@ -42,6 +42,7 @@ router.post('/', async (req, res) => {
       if (phase != 2) {
         console.log("The epoch is not ended yet")
         res.status(500).json("The epoch is not ended yet");
+        release();
         return
       }
       
@@ -74,7 +75,10 @@ router.post('/', async (req, res) => {
 
       console.log("Ending epoch...")
       try {
-        await poolMaster.endEpoch(winnerId)
+        let transaction = await poolMaster.endEpoch(winnerId)
+        let receipt = await provider.waitForTransaction(transaction.hash);
+        console.log('Transaction has been mined:');
+        console.log(receipt);
       } catch (error) {
         console.log(error)
         res.status(500).json(error);
