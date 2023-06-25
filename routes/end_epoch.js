@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
 
     console.log("Ending epoch requested...")
 
-    const provider = new ethers.providers.JsonRpcProvider(process.env.URL_SEPOLIA_INFURA)
+    const provider = new ethers.providers.JsonRpcProvider(process.env.URL_ARBITRUM_INFURA)
     const wallet = new ethers.Wallet(process.env.PRIVATE_KEY_TESTNETS, provider)
     console.log("wallet address", wallet.address)
 
