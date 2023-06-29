@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
     console.log("Ending epoch requested...")
 
     const provider = new ethers.providers.JsonRpcProvider(process.env.URL_ARBITRUM_INFURA)
-    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY_TESTNETS, provider)
+    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY_MAINNET, provider)
     console.log("wallet address", wallet.address)
 
     const poolMaster = new ethers.Contract(PoolMasterAddress.address, PoolMasterAbi.abi, wallet)
@@ -65,8 +65,8 @@ router.post('/', async (req, res) => {
 
       let token1 = await getTokenBySymbol(token1Symbol)
       let token2 = await getTokenBySymbol(token2Symbol)
-      console.log(token1)
-      console.log(token2)
+      console.log("token1.price:", token1.price)
+      console.log("token2.price:", token2.price)
 
       if (token1.price < token2.price)
         winnerId = 1
@@ -128,8 +128,8 @@ const getTokenBySymbol = async (symbol) => {
       }
     });
 
-    console.log("response")
-    console.log(response)
+    // console.log("response")
+    // console.log(response)
 
     const token = response.data.data[symbol];
     return {
@@ -138,7 +138,9 @@ const getTokenBySymbol = async (symbol) => {
       price: token.quote.USD.price
     };
   } catch (error) {
+    console.log("CMC Api ERROR:")
     console.error(error);
+    console.log("End CMC Api ERROR")
   }
 };
 
